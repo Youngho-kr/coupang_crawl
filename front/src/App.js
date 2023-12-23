@@ -23,8 +23,8 @@ class App extends Component {
       <div>
         {this.state.posts.map(item => (
           <div key={item.id}>
-            <h1>{item.title}</h1>
-            <span>{item.content}</span>
+            <h1>{item.name}</h1>
+            <span>{item.old_price}</span>
           </div>
         ))}
       </div>
