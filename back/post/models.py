@@ -6,6 +6,7 @@ class Post(models.Model):
     discount_percent = models.TextField(default="")
     old_price = models.TextField(default="")
     new_price = models.TextField(default="")
+    link = models.TextField(default="")
     
     def __str__(self):
         return self.name

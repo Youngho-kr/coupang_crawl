@@ -8,6 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
             "discount_percent",
             "old_price",
             "new_price",
+            "link",
         )
         model = Post
     

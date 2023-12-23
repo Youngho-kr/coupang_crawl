@@ -23,7 +23,7 @@ def crawling():
 
         soup = BeautifulSoup(res.text, "html.parser")
 
-        items = soup.find_all("dd", "descriptions")
+        items = soup.find_all("li", "baby-product renew-badge")
 
         result = []
         for item in items:
@@ -31,23 +31,29 @@ def crawling():
             sold_out = item.find("div", "out-of-stock")
             if sold_out != None:
                 continue
+            # 세일하지 않는 상품은 수집 X
             discount_percent = item.find("span", "discount-percentage")
             if discount_percent == None:
                 continue
             
             name = item.find("div", "name")
-            # discount_percent = item.find("span", "discount-percentage")
             old_price = item.find("del", "base-price")
             new_price = item.find("strong", "price-value")
+            link = item.find("a", "baby-product-link")
+            link = link.get("href")
+            link = "http://www.coupang.com" + link
+            
+            print(link)
             
             tmp = {
                 "name": name.text.replace("\n", "")[4:],
                 "discount_percent": discount_percent.text,
                 "old_price": old_price.text.replace("\n", "").replace(" ",""),
                 "new_price": new_price.text,
+                "link": link
             }
             
-            print(tmp)
+            # print(tmp)
             result.append(tmp)
             
         return result
@@ -55,7 +61,5 @@ def crawling():
 if __name__ == "__main__": 
     crawl_result = crawling()
     for item in crawl_result:
-        print(item)
-        Post(name = item["name"], discount_percent = item["discount_percent"], old_price = item["old_price"], new_price = item["new_price"]).save()
-        # Post(tmp =  item["tmp"])
+        Post(name = item["name"], discount_percent = item["discount_percent"], old_price = item["old_price"], new_price = item["new_price"], link = item["link"]).save()
         
