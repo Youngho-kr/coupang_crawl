@@ -21,21 +21,6 @@ class App extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   fetch("http://127.0.0.1:8000/api/")
-  //     .then((res) => res.json())
-  //     .then((posts) => {
-  //       this.setState({
-  //         posts: posts,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  
-  //   console.log(this.search);
-  // }
-
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this)
@@ -46,7 +31,7 @@ class App extends Component {
     this.setState({
       search: e.target.value,
     })
-    console.log(this.state.search)
+    // console.log(this.state.search)
   }
 
   handleSubmit = async(e) => {
@@ -54,11 +39,11 @@ class App extends Component {
     await this.componentDidMount();
     /* Search for name */
     const new_posts = this.state.posts.filter(data => data["name"].includes(this.state.search))
-    console.log(new_posts)
+    // console.log(new_posts)
     this.setState({
       posts: new_posts,
     });
-    console.log(this.state.posts)
+    // console.log(this.state.posts)
   }
 
   render() {

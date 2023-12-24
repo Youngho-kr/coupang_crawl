@@ -10,22 +10,22 @@ from post.models import Post
 import requests
 from bs4 import BeautifulSoup
 
-url_base = "https://www.coupang.com/np/categories/194276?page="
+url_bases = ["https://www.coupang.com/np/categories/194276", "https://www.coupang.com/np/categories/497135"]
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36",
     "Accept-Language": "ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
 }
 
 def crawling():
-    for i in range(1, 10):
-        res = requests.get(url_base + str(i), headers=headers)
+    result = []
+    for url_base in url_bases:
+        res = requests.get(url_base, headers=headers)
         res.raise_for_status()
 
         soup = BeautifulSoup(res.text, "html.parser")
 
         items = soup.find_all("li", "baby-product renew-badge")
 
-        result = []
         for item in items:
             # 품절된 상품은 수집 X
             sold_out = item.find("div", "out-of-stock")
@@ -43,7 +43,7 @@ def crawling():
             link = link.get("href")
             link = "http://www.coupang.com" + link
             
-            print(link)
+            # print(link)
             
             tmp = {
                 "name": name.text.replace("\n", "")[4:],
@@ -53,10 +53,12 @@ def crawling():
                 "link": link
             }
             
-            # print(tmp)
-            result.append(tmp)
-            
-        return result
+            for r in result:
+                if r["name"] == tmp["name"]:
+                    continue
+
+            result.append(tmp)     
+    return result
     
 if __name__ == "__main__": 
     crawl_result = crawling()
